@@ -1,0 +1,57 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Smart Resume Reviewer</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <div class="container">
+    <h1>📄 Smart Resume Reviewer</h1>
+
+    <form method="POST" enctype="multipart/form-data" class="upload-form" onsubmit="showLoading()">
+      <label class="file-upload">
+        <input type="file" name="resume" accept=".pdf" required>
+        <span>📁 Select PDF Resume</span>
+      </label>
+      <button type="submit">🚀 Upload & Review</button>
+    </form>
+
+    <div id="loading" style="display:none;">
+      <p>⏳ Analyzing your resume...</p>
+    </div>
+
+    {% if review %}
+      <div class="review">
+        <p class="success">✅ Resume successfully analyzed!</p>
+        <h2>📝 Resume Review</h2>
+
+        {% for category, comments in review.items() %}
+          <div class="review-block">
+            <details open>
+              <summary><strong>{{ category }}</strong></summary>
+              <ul>
+                {% for comment in comments %}
+                  <li>{{ comment }}</li>
+                {% endfor %}
+              </ul>
+            </details>
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  </div>
+
+  <footer>
+    <p> Powered by Ollama + Gemma</p>
+  </footer>
+
+  <script>
+    function showLoading() {
+      document.getElementById('loading').style.display = 'block';
+    }
+  </script>
+</body>
+</html>
